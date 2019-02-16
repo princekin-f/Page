@@ -15,7 +15,8 @@ import android.view.View;
  */
 public class PageView extends View {
 
-    private Paint paintPink = new Paint();
+    private RectF rect;
+    private Paint paintPink;
     private Paint paintRed = new Paint();
     private Paint paintBlack = new Paint();
     private Paint paintWhite = new Paint();
@@ -85,12 +86,20 @@ public class PageView extends View {
     }
 
     public void init() {
+        // 初始化矩形，各个部位的父容器，如鼻子是在矩形内部画椭圆
+        rect = new RectF();
+
+        // 创建画笔
+        paintPink = new Paint();
+        // 设置画笔的颜色
         paintPink.setColor(Color.rgb(255, 155, 192));
+        // 设置画笔的填充方式：描边
         paintPink.setStyle(Paint.Style.STROKE);
+        // 设置画笔的宽度
         paintPink.setStrokeWidth(3f);
+        // 设置抗锯齿，可以圆润一些
         paintPink.setAntiAlias(true);
 
-//        paintRed.setColor(Color.RED);
         paintRed.setColor(Color.rgb(255, 99, 71));
         paintRed.setStyle(Paint.Style.STROKE);
         paintRed.setStrokeWidth(3f);
@@ -107,69 +116,75 @@ public class PageView extends View {
         paintBlack.setAntiAlias(true);
     }
 
+    /**
+     * 普通动画，获取百分百
+     */
     private void initIntAnim() {
         // 鼻子
-        animNose = ValueAnimator.ofInt(1, 100);
+        // 设置动画的起始值，也就是我们需要的进度变化区间
+        animNose = ValueAnimator.ofInt(0, 100);
         animNose.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                // 监听动画进度变化，并执行重绘操作
                 progressNose = (int) animation.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
+        // 设置动画时长
         animNose.setDuration(1000);
 
         // 眼睛
-        animEyes = ValueAnimator.ofInt(1, 100);
+        animEyes = ValueAnimator.ofInt(0, 100);
         animEyes.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 progressEyes = (int) animation.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animEyes.setDuration(800);
 
         // 腮红
-        animFace = ValueAnimator.ofInt(1, 100);
+        animFace = ValueAnimator.ofInt(0, 100);
         animFace.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 progressFace = (int) animation.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animFace.setDuration(800);
 
         // 嘴巴
-        animMouth = ValueAnimator.ofInt(1, 100);
+        animMouth = ValueAnimator.ofInt(0, 100);
         animMouth.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 progressMouth = (int) animation.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animMouth.setDuration(500);
 
         // 腿
-        animLegs = ValueAnimator.ofInt(1, 100);
+        animLegs = ValueAnimator.ofInt(0, 100);
         animLegs.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 progressLegs = (int) animation.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animLegs.setDuration(400);
 
         // 脚
-        animFoots = ValueAnimator.ofInt(1, 100);
+        animFoots = ValueAnimator.ofInt(0, 100);
         animFoots.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 progressFoots = (int) animation.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animFoots.setDuration(400);
@@ -177,9 +192,6 @@ public class PageView extends View {
     }
 
     public void initPath() {
-
-        initIntAnim();
-
         // 千万不要觉得下面很复杂，就是找贝尔塞的控制点和结束点而已，很简单
         // 我们的ViewPath，其实可以绘制任何直线路径和贝塞尔曲线路径了，自己在调用lineTo传入点等就行了
         // 猪头 🐷
@@ -195,7 +207,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointHead = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animHead.setDuration(3000);
@@ -212,7 +224,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointEar1 = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animEar1.setDuration(600);
@@ -229,7 +241,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointEar2 = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animEar2.setDuration(600);
@@ -248,7 +260,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointBody = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animBody.setDuration(2000);
@@ -265,7 +277,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointArmRight = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animArmRight.setDuration(500);
@@ -282,7 +294,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointHandRight = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animHandRight.setDuration(500);
@@ -299,7 +311,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointArmLeft = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animArmLeft.setDuration(500);
@@ -316,7 +328,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointHandLeft = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animHandLeft.setDuration(500);
@@ -334,7 +346,7 @@ public class PageView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 pointTail = (ViewPoint) valueAnimator.getAnimatedValue();
-                postInvalidate();
+                invalidate();
             }
         });
         animTail.setDuration(1200);
@@ -352,6 +364,7 @@ public class PageView extends View {
         if (widthMeasureSpec > 0) {
             if (!isInitPath) {
                 isInitPath = true;
+                initIntAnim();
                 initPath();
             }
         }
@@ -363,44 +376,49 @@ public class PageView extends View {
         super.onDraw(canvas);
 
         // 鼻子：倾斜的椭圆
-        RectF oval = new RectF(dp2px(200), dp2px(101), dp2px(250), dp2px(160));
-        // 旋转画布，结束还需旋转回去
+        rect.set(dp2px(200), dp2px(101), dp2px(250), dp2px(160));
+        // 旋转画布，结束还需旋转回去（在这里实现倾斜）
         canvas.rotate(-15, dp2px(getContext(), 225), dp2px(getContext(), 150));
         if (progressNose < 100) {
+            // 如果进度不完整，只进行描边操作
             paintPink.setStyle(Paint.Style.STROKE);
             paintRed.setStyle(Paint.Style.STROKE);
         } else {
+            // 如果进度完整，即环形绘制完成，设置画笔为填充模式,设置填充及描边（FILL_AND_STROKE）也行
             paintPink.setStyle(Paint.Style.FILL);
             paintRed.setStyle(Paint.Style.FILL);
         }
-        canvas.drawArc(oval, 0, progressNose * 3.6f, false, paintPink);
+        // 画扇形：如果角度为360度，就是矩形的内切椭圆，如果矩形为正方形，则椭圆为正圆
+        canvas.drawArc(rect, 0, progressNose * 3.6f, false, paintPink);
         canvas.rotate(15, dp2px(getContext(), 225), dp2px(getContext(), 130));
 
         // 鼻孔
-        oval.set(dp2px(213), dp2px(125), dp2px(223), dp2px(135));
-        canvas.drawArc(oval, 0, progressNose * 3.6f, false, paintRed);
-        oval.set(dp2px(230), dp2px(122), dp2px(240), dp2px(132));
-        canvas.drawArc(oval, 0, progressNose * 3.6f, false, paintRed);
+        // 重新设置矩形的参数为正方形
+        rect.set(dp2px(213), dp2px(125), dp2px(223), dp2px(135));
+        // 根据进度画圆形鼻孔
+        canvas.drawArc(rect, 0, progressNose * 3.6f, false, paintRed);
+        rect.set(dp2px(230), dp2px(122), dp2px(240), dp2px(132));
+        canvas.drawArc(rect, 0, progressNose * 3.6f, false, paintRed);
 
+        // 重新设置画笔为描边
         paintPink.setStyle(Paint.Style.STROKE);
         paintRed.setStyle(Paint.Style.STROKE);
 
-        // 眼睛：前两个眼眶，后两个眼球
+        // 眼睛部分：眼眶
+        rect.set(dp2px(110), dp2px(115), dp2px(140), dp2px(145));
+        canvas.drawArc(rect, 0, progressEyes * 3.6f, false, paintPink);
+        rect.set(dp2px(145), dp2px(105), dp2px(175), dp2px(135));
+        canvas.drawArc(rect, 0, progressEyes * 3.6f, false, paintPink);
+        // 黑眼球
         if (progressEyes < 100) {
             paintBlack.setStyle(Paint.Style.STROKE);
         } else {
             paintBlack.setStyle(Paint.Style.FILL);
         }
-        oval.set(dp2px(110), dp2px(115), dp2px(140), dp2px(145));
-        canvas.drawArc(oval, 0, progressEyes * 3.6f, false, paintPink);
-        oval.set(dp2px(145), dp2px(105), dp2px(175), dp2px(135));
-        canvas.drawArc(oval, 0, progressEyes * 3.6f, false, paintPink);
-        oval.set(dp2px(123), dp2px(123), dp2px(133), dp2px(133));
-        canvas.drawArc(oval, 0, progressEyes * 3.6f, false, paintBlack);
-        oval.set(dp2px(158), dp2px(113), dp2px(168), dp2px(123));
-        canvas.drawArc(oval, 0, progressEyes * 3.6f, false, paintBlack);
-
-        paintBlack.setStyle(Paint.Style.STROKE);
+        rect.set(dp2px(123), dp2px(123), dp2px(133), dp2px(133));
+        canvas.drawArc(rect, 0, progressEyes * 3.6f, false, paintBlack);
+        rect.set(dp2px(158), dp2px(113), dp2px(168), dp2px(123));
+        canvas.drawArc(rect, 0, progressEyes * 3.6f, false, paintBlack);
 
         // 腮红
         if (progressFace < 100) {
@@ -408,26 +426,25 @@ public class PageView extends View {
         } else {
             paintPink.setStyle(Paint.Style.FILL);
         }
-        oval.set(dp2px(70), dp2px(160), dp2px(95), dp2px(190));
-        canvas.drawArc(oval, 0, progressFace * 3.6f, false, paintPink);
+        rect.set(dp2px(70), dp2px(160), dp2px(95), dp2px(190));
+        canvas.drawArc(rect, 0, progressFace * 3.6f, false, paintPink);
 
         // 嘴巴
-        oval.set(dp2px(110), dp2px(175), dp2px(155), dp2px(200));
-        canvas.drawArc(oval, 165, -progressMouth * 1.8f, false, paintRed);
+        rect.set(dp2px(110), dp2px(175), dp2px(155), dp2px(200));
+        canvas.drawArc(rect, 165, -progressMouth * 1.8f, false, paintRed);
 
-        // 腿和脚，需要内容填充
+        // 腿和脚，需要内容填充（眼睛绘制完成，黑色画笔已是填充状态）
         paintPink.setStyle(Paint.Style.FILL);
-        paintBlack.setStyle(Paint.Style.FILL);
 
         // 腿
         canvas.drawRect(dp2px(95), dp2px(320), dp2px(98), dp2px(320 + 30 * progressLegs / 100f), paintPink);
         canvas.drawRect(dp2px(130), dp2px(320), dp2px(133), dp2px(320 + 30 * progressLegs / 100f), paintPink);
 
         // 小黑脚
-        oval.set(dp2px(90), dp2px(350), dp2px(90 + 20 * progressFoots / 100f), dp2px(360));
-        canvas.drawRoundRect(oval, dp2px(5), dp2px(5), paintBlack);
-        oval.set(dp2px(125), dp2px(350), dp2px(125 + 20 * progressFoots / 100f), dp2px(360));
-        canvas.drawRoundRect(oval, dp2px(5), dp2px(5), paintBlack);
+        rect.set(dp2px(90), dp2px(350), dp2px(90 + 20 * progressFoots / 100f), dp2px(360));
+        canvas.drawRoundRect(rect, dp2px(5), dp2px(5), paintBlack);
+        rect.set(dp2px(125), dp2px(350), dp2px(125 + 20 * progressFoots / 100f), dp2px(360));
+        canvas.drawRoundRect(rect, dp2px(5), dp2px(5), paintBlack);
 
         paintPink.setStyle(Paint.Style.STROKE);
         paintBlack.setStyle(Paint.Style.STROKE);
@@ -473,8 +490,22 @@ public class PageView extends View {
     }
 
     public void startAnimation() {
+        // 再次绘制需要置空，并重新设置Path起点，如果只绘制一次，无需此操作
+        reset();
+        initPath();
         animatorSet.start();
     }
 
+    private void reset() {
+        mPath.reset();
+        mPathEar1.reset();
+        mPathEar2.reset();
+        mPathBody.reset();
+        mPathArmRight.reset();
+        mPathHandRight.reset();
+        mPathArmLeft.reset();
+        mPathHandLeft.reset();
+        mPathTail.reset();
+    }
 
 }

@@ -5,7 +5,7 @@ import java.util.Collection;
 
 /**
  * @author: liuzhenfeng
- * @function:
+ * @function: 设置Path的曲线信息，获取当前的坐标点
  * @date: 2019/1/21  13:39
  */
 public class ViewPath {
@@ -16,7 +16,6 @@ public class ViewPath {
     public static final int CURVE = 3;
 
     private ArrayList<ViewPoint> mPoints;
-
 
     public ViewPath() {
         mPoints = new ArrayList<>();
@@ -41,6 +40,5 @@ public class ViewPath {
     public Collection<ViewPoint> getPoints() {
         return mPoints;
     }
-
 
 }

@@ -2,7 +2,7 @@ package com.lzf.page;
 
 /**
  * @author: liuzhenfeng
- * @function:
+ * @function: 贝塞尔曲线的坐标信息
  * @date: 2019/1/21  13:40
  */
 public class ViewPoint {
@@ -36,7 +36,6 @@ public class ViewPoint {
     public static ViewPoint quadTo(float x, float y, float x1, float y1, int operation) {
         return new ViewPoint(x, y, x1, y1, operation);
     }
-
 
     private ViewPoint(float x, float y, int operation) {
         this.x = x;
