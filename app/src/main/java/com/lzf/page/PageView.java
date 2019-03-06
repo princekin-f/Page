@@ -506,6 +506,7 @@ public class PageView extends View {
         mPathArmLeft.reset();
         mPathHandLeft.reset();
         mPathTail.reset();
+        animatorSet.cancel();
     }
 
 }
